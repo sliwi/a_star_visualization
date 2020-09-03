@@ -1,6 +1,42 @@
 <!DOCTYPE html>
 <html>
+    <!DOCTYPE HTML>
+
+<html lang = "en">
+    <head>
+        <title>Search Algorithms Visualizer</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div id = "grid">
+            <table id="table">
+                
+            </table>
+        </div>
+        <div id = "access">
+            <h1>Path Finding Visualizer</h1>
+            <hr id="bar">
+            <h4>Controls</h4>
+            <ul>
+                <li>Left click(and drag) to create obstacle</li>
+            </ul>
+            <div id = "selection">
+                <input id ="bfs" class="form-check-input" name ="algo" type="radio">
+                <label for ="bfs">Breadth First Search</label>
+                <br>
+                <input id ="dfs" class="form-check-input" name = "algo" type="radio">
+                <label for ="dfs">Depth First Search</label>
+            </div>
+            <button id="start" class="btn btn-success">Start</button> 
+            <button id="reset" class="btn btn-danger">Reset</button>
+        </div>
+    </body>
     <script src="PriorityQueue.js"></script>
     <script src="test.js"></script>
+    <script src="Cell.js"></script>
+    <script src="script.js"></script>
+</html>
+    
 
 </html>
