@@ -18,7 +18,7 @@ class PriorityQueue{
 
 
     //adds element to the priority queue based on its priority
-    enqueue(element,priority){
+    enqueue(priority,element){
 
         //checks if pQueue is empty, or if elem has absolute lowest priority
         if(this.isEmpty() || priority>this.pQueue[this.pQueue.length-1].priority || priority===this.pQueue[this.pQueue.length-1].priority){
@@ -54,7 +54,7 @@ class PriorityQueue{
     //removes and returns first element from the queue
     dequeue(){
         if(!this.isEmpty()){
-            return this.pQueue.shift();
+            return this.pQueue.shift().element;
         }
     }
     

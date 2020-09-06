@@ -6,6 +6,16 @@ const purple = "#8209e6";
 const black = "#000000";
 const pink = "#ff00d0";
 
+const cellStatus = {
+    AVAILABLE: "available",
+    OPEN: "open",
+    CLOSE: "close",
+    WALL: "wall",
+    START: "start",
+    END: "end",
+    GOAL: "goal"
+}
+
 class Cell{
 
     constructor(x,y){
@@ -13,53 +23,87 @@ class Cell{
         this.parent = parent;
         this.x = x;
         this.y = y;
-        this.color = white;
-        this.gCost = 0;
-        this.hCost = 0;
-        this.fCost = 0;
+        this.status = cellStatus.AVAILABLE;
+        this.neighbours = [];
     }
-
+    
     getX(){
-        return x;
+        return this.x;
     }
     getY(){
-        return y;
+        return this.y;
     }
-
+    getNeighbours(){
+        return this.neighbours;
+    }
+    isAvailable(){
+        return this.status === cellStatus.AVAILABLE;
+    }
     isOpen(){
-        return this.color === white;
+        return this.status === cellStatus.OPEN;
     }
     isClosed(){
-        return this.color === red;
+        return this.status === cellStatus.CLOSE;
     }
     isWall(){
-        return this.color === black;
+        return this.status === cellStatus.WALL;
     }
     isStart(){
-        return this.color === green;
+        return this.status === cellStatus.START;
     }
     isEnd(){
-        return this.color === purple;
+        return this.status === cellStatus.END;
     }
     isGoal(){
-        return this.color === pink;
+        return this.status === cellStatus.GOAL;
+    }
+    setAvailable(){
+        this.status = cellStatus.AVAILABLE;
+    }
+    setOpen(){
+        this.status = cellStatus.OPEN;
     }
     setClosed(){
-        this.color = red;
+        this.status = cellStatus.CLOSE;
     }
     setWall(){
-        this.color = black;
+        this.status = cellStatus.WALL;
     }
     setStart(){
-        this.color = green;
+        this.status = cellStatus.START;
     }
     setEnd(){
-        this.color = purple;
+        this.status = cellStatus.END;
     }
     setGoal(){
-        this.color = pink;
+        this.status = cellStatus.GOAL;
     }
-    reset(){
-        this.color = white;
+    updateNeighbours(grid){
+        //add cell that is one above
+
+        if(this.y-1>=0 && !this.neighbours.includes(grid[this.y-1][this.x])){
+            if(grid[this.y-1][this.x].isWall()===false){
+                this.neighbours.push(grid[this.y-1][this.x]);
+            }
+        }
+        //add cell that is one below
+        if(this.y+1<grid.length  && !this.neighbours.includes(grid[this.y+1][this.x])){
+            if(grid[this.y+1][this.x].isWall()===false){
+                this.neighbours.push(grid[this.y+1][this.x]);
+            }
+        }
+        //add cell that is one to the left
+        if(this.x-1>=0 && !this.neighbours.includes(grid[this.y][this.x-1])){
+            if(grid[this.y][this.x-1].isWall()===false){
+                this.neighbours.push(grid[this.y][this.x-1]);
+            }
+        }
+        //add cell that is one to the right
+        if(this.x+1<grid[this.y].length  && !this.neighbours.includes(grid[this.y][this.x+1])){
+            if(grid[this.y][this.x+1].isWall()===false){
+                this.neighbours.push(grid[this.y][this.x+1]);
+            }
+        }
+        return this.neighbours;
     }
 }

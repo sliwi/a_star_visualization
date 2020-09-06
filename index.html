@@ -15,25 +15,20 @@
             </table>
         </div>
         <div id = "access">
-            <h1>Path Finding Visualizer</h1>
+            <h1>A* Path Finding Visualizer</h1>
             <hr id="bar">
             <h4>Controls</h4>
             <ul>
+                <li>The start, end, and wall cell have colours green, orange, and grey respectively.</li>
+                <li>Left click(and drag) to create start, end, or wall cell</li>
+                <li>Hold Shift and drag to delete start, end, or wall cell</li>
                 <li>Left click(and drag) to create obstacle</li>
             </ul>
-            <div id = "selection">
-                <input id ="bfs" class="form-check-input" name ="algo" type="radio">
-                <label for ="bfs">Breadth First Search</label>
-                <br>
-                <input id ="dfs" class="form-check-input" name = "algo" type="radio">
-                <label for ="dfs">Depth First Search</label>
-            </div>
-            <button id="start" class="btn btn-success">Start</button> 
-            <button id="reset" class="btn btn-danger">Reset</button>
+            <button id="start_btn" class="btn btn-success">Start</button> 
+            <button id="reset_btn" class="btn btn-danger">Reset</button>
         </div>
     </body>
     <script src="PriorityQueue.js"></script>
-    <script src="test.js"></script>
     <script src="Cell.js"></script>
     <script src="script.js"></script>
 </html>
