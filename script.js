@@ -1,6 +1,7 @@
 const table = document.querySelector("#table");
 const startBtn = document.querySelector("#start_btn");
 const resetBtn = document.querySelector("#reset_btn");
+const gridHTML = document.querySelector("#grid");
 
 let started = false;
 let setStart = false;
@@ -8,6 +9,12 @@ let setEnd = false;
 let mouseDown = false;
 let startCell;
 let endCell;
+let speed;
+const speedSetting = {
+    FAST:1,
+    AVERAGE:20,
+    SLOW:100,
+}
 
 function makeGrid(rows,numOfCells){
     const grid = [];
@@ -126,18 +133,25 @@ function visualize(cells,index,cameFrom,end){
         }
     setTimeout(()=>{
         visualize(cells,index+1,cameFrom,end);
-    },20);
+    },speed);
 }
 
 function reconstrucPath(cameFrom,endCell){
     let current = endCell;
     const visual = [];
-    while (current!=startCell){
+    while (current!==undefined && current!==startCell){
         current = cameFrom.get(current);
+
+        if(current===undefined){
+            break;
+        }
+
         if(current!==startCell){
             current.setPath();
         }
-        visual.push(current);
+        if(current!==undefined){
+            visual.push(current);
+        }
     }
     visual.push(endCell);
     return visual;
@@ -159,7 +173,7 @@ function visualizePath(pathCells,index){
     }
     setTimeout(()=>{
         visualizePath(pathCells,index+1);
-    },20);
+    },speed);
 }
 function aStarSearch(start,end){
     const visual = [];
@@ -186,6 +200,7 @@ function aStarSearch(start,end){
         closedSet.delete(currentCell);
         
         if(currentCell===end){
+            console.log("Path found!");
             visualize(visual,0,cameFrom,end);
             return true;
         }
@@ -214,19 +229,27 @@ function aStarSearch(start,end){
             visual.push(currentCell);
         }
     }
-    visualize(visual,0);
+    visualize(visual,0,cameFrom,end);
+    console.log("Path not found!");
     return false;
 }
 
 function main(){
 
+    speed = speedSetting.FAST;
     startBtn.addEventListener('click',(e)=>{
         e.preventDefault;
+
         console.log("Run A* Algorithm");
         for(let i=0; i<grid.length; i++){
             for(let j=0; j<grid[i].length; j++){
                 const cell = grid[i][j];
+                const cellHTML = document.querySelector(`#cell_${cell.getX()}_${cell.getY()}`);
                 cell.updateNeighbours(grid);
+                cellHTML.removeEventListener("mousedown",setMouseDown);
+                cellHTML.removeEventListener("mousemove",verifyCell);
+                cellHTML.removeEventListener("mouseup",setMouseUp);
+                cellHTML.removeEventListener("click",mouseClick);
             }  
         }
 
@@ -236,7 +259,10 @@ function main(){
     resetBtn.addEventListener('click', (e)=>{
        
         console.log("Clearing board...reseting visualizer");
-        console.log(grid.length);
+        startCell = null;
+        endCell = null;
+        setStart = false;
+        setEnd = false;
         for(let i=0; i<grid.length; i++){
             for(let j=0; j<grid[i].length; j++){
                 const cell = grid[i][j];
@@ -245,10 +271,12 @@ function main(){
                 const cellHTML = document.querySelector(`#cell_${cell.getX()}_${cell.getY()}`);
                 cellHTML.style.backgroundColor = "#fff";
                 cellHTML.style.border = "1px solid #ccc";
-                startCell = null;
-                endCell = null;
-                setStart = false;
-                setEnd = false;
+                cellHTML.className = "start";
+                cellHTML.addEventListener("mousedown",setMouseDown);
+                cellHTML.addEventListener("mousemove",verifyCell);
+                cellHTML.addEventListener("mouseup",setMouseUp);
+                cellHTML.addEventListener("click",mouseClick);
+                
                 
             }  
         }

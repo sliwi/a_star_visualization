@@ -61,13 +61,13 @@ td{
 }
 
 .start:hover{
-    background-color:#54e600;
+    background-color:#54e600 !important;
 }
 
 .wall:hover{
-    background-color:#a9a9a9;
+    background-color:#a9a9a9 !important;
 }
 .end:hover{
-    background-color:#e3670e;
+    background-color:#e3670e !important;
 }
 
