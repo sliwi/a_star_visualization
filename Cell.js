@@ -1,10 +1,3 @@
-const white = "#ffffff";
-const green = "#54e600";
-const red = "#c70007";
-const orange = "#e3670e";
-const purple = "#8209e6";
-const black = "#000000";
-const pink = "#ff00d0";
 
 const cellStatus = {
     AVAILABLE: "available",

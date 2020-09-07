@@ -3,7 +3,6 @@ const startBtn = document.querySelector("#start_btn");
 const resetBtn = document.querySelector("#reset_btn");
 const gridHTML = document.querySelector("#grid");
 
-let started = false;
 let setStart = false;
 let setEnd = false;
 let mouseDown = false;
@@ -93,7 +92,7 @@ function updateCell(obj,ev){
     }
     else if(!event.shiftKey){
         if(!setStart && !setEnd){
-            obj.style.background = "#54e600";
+            obj.style.background = "#ff99ff";
             setStart = true;
             obj.style.border = "none";
             updateHover("end");
@@ -116,6 +115,7 @@ function updateCell(obj,ev){
         }
     }
 }
+
 function visualize(cells,index,cameFrom,end){
         if(index===cells.length){
             visualizePath(reconstrucPath(cameFrom,end),0);
@@ -125,11 +125,11 @@ function visualize(cells,index,cameFrom,end){
         const cellHTML = document.querySelector(`#cell_${cell.getX()}_${cell.getY()}`);
 
         if(cell.isOpen()){
-            cellHTML.style.backgroundColor = "green";
+            cellHTML.style.backgroundColor = "#00cc00";
             
         }
         else if(cell.isClosed()){
-            cellHTML.style.backgroundColor = "red";
+            cellHTML.style.backgroundColor = "#ff1a1a";
         }
     setTimeout(()=>{
         visualize(cells,index+1,cameFrom,end);
@@ -169,7 +169,7 @@ function visualizePath(pathCells,index){
         cellHTML.style.backgroundColor = "aqua";
     }
     else if(cell.isPath()){
-        cellHTML.style.backgroundColor = "yellow";
+        cellHTML.style.backgroundColor = "#6600ff";
     }
     setTimeout(()=>{
         visualizePath(pathCells,index+1);
