@@ -60,12 +60,14 @@ td{
     white-space: nowrap;
 }
 
-.wall:hover{
-    background-color:#a9a9a9;
-}
 .start:hover{
     background-color:#54e600;
+}
+
+.wall:hover{
+    background-color:#a9a9a9;
 }
 .end:hover{
     background-color:#e3670e;
 }
+

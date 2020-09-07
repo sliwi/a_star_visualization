@@ -13,7 +13,8 @@ const cellStatus = {
     WALL: "wall",
     START: "start",
     END: "end",
-    GOAL: "goal"
+    GOAL: "goal",
+    PATH: "path"
 }
 
 class Cell{
@@ -57,6 +58,9 @@ class Cell{
     isGoal(){
         return this.status === cellStatus.GOAL;
     }
+    isPath(){
+        return this.status === cellStatus.PATH;
+    }
     setAvailable(){
         this.status = cellStatus.AVAILABLE;
     }
@@ -77,6 +81,9 @@ class Cell{
     }
     setGoal(){
         this.status = cellStatus.GOAL;
+    }
+    setPath(){
+        this.status = cellStatus.PATH;
     }
     updateNeighbours(grid){
         //add cell that is one above

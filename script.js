@@ -1,5 +1,7 @@
 const table = document.querySelector("#table");
 const startBtn = document.querySelector("#start_btn");
+const resetBtn = document.querySelector("#reset_btn");
+
 let started = false;
 let setStart = false;
 let setEnd = false;
@@ -63,14 +65,12 @@ function updateHover(name){
 const grid = makeGrid(35,50);
 
 function updateCell(obj,ev){
-    const cellPos = obj.id.split(/([0-9]+)/);
-    const x = cellPos[1];
-    const y = cellPos[3];
+    const cellindex = obj.id.split(/([0-9]+)/);
+    const x = cellindex[1];
+    const y = cellindex[3];
 
     const cell = grid[y][x];
-    //console.log(`(${x},${y})`);
-    //console.log(`(${cell.getX()},${cell.getY()})`)
-    //console.log(cell.updateNeighbours(grid));
+  
     if(event.shiftKey && !cell.isAvailable()){
         obj.style.background = "#fff";
         obj.style.border = "1px solid #ccc";
@@ -109,33 +109,60 @@ function updateCell(obj,ev){
         }
     }
 }
-function visualize(){
-    for(let i=0; i<grid.length; i++){
-        for(cell of grid[i]){
-            if(cell.isOpen()){
-                const cellHTML = document.querySelector(`#cell_${cell.getX()}_${cell.getY()}`);
-                cellHTML.style.backgroundColor = "green";
-            }
-            else if(cell.isClosed()){
-                const cellHTML = document.querySelector(`#cell_${cell.getX()}_${cell.getY()}`);
-                cellHTML.style.backgroundColor = "red";
-            }
+function visualize(cells,index,cameFrom,end){
+        if(index===cells.length){
+            visualizePath(reconstrucPath(cameFrom,end),0);
+            return true;
         }
-    }
+        const cell = cells[index];
+        const cellHTML = document.querySelector(`#cell_${cell.getX()}_${cell.getY()}`);
+
+        if(cell.isOpen()){
+            cellHTML.style.backgroundColor = "green";
+            
+        }
+        else if(cell.isClosed()){
+            cellHTML.style.backgroundColor = "red";
+        }
+    setTimeout(()=>{
+        visualize(cells,index+1,cameFrom,end);
+    },20);
 }
 
 function reconstrucPath(cameFrom,endCell){
     let current = endCell;
+    const visual = [];
     while (current!=startCell){
         current = cameFrom.get(current);
-        if(current!=startCell && current!=endCell){
-            const cellHTML = document.querySelector(`#cell_${current.getX()}_${current.getY()}`);
-            cellHTML.style.backgroundColor = "yellow";
+        if(current!==startCell){
+            current.setPath();
         }
+        visual.push(current);
     }
-    
+    visual.push(endCell);
+    return visual;
+}
+
+function visualizePath(pathCells,index){
+
+    if(index===pathCells.length){
+        return true;
+    }
+    const cell = pathCells[index];
+    const cellHTML = document.querySelector(`#cell_${cell.getX()}_${cell.getY()}`);
+
+    if(cell.isEnd()){
+        cellHTML.style.backgroundColor = "aqua";
+    }
+    else if(cell.isPath()){
+        cellHTML.style.backgroundColor = "yellow";
+    }
+    setTimeout(()=>{
+        visualizePath(pathCells,index+1);
+    },20);
 }
 function aStarSearch(start,end){
+    const visual = [];
     const openSet = new PriorityQueue();
     const closedSet = new Set();
     const cameFrom = new Map();
@@ -159,9 +186,7 @@ function aStarSearch(start,end){
         closedSet.delete(currentCell);
         
         if(currentCell===end){
-            const cellHTML = document.querySelector(`#cell_${currentCell.getX()}_${currentCell.getY()}`);
-            cellHTML.style.backgroundColor = "aqua";
-            reconstrucPath(cameFrom,end);
+            visualize(visual,0,cameFrom,end);
             return true;
         }
         
@@ -177,15 +202,19 @@ function aStarSearch(start,end){
                 if(!closedSet.has(neighbour)){
                     openSet.enqueue(fScore.get(neighbour),neighbour);
                     closedSet.add(neighbour);
-                    neighbour.setOpen();
+                    if(neighbour!==end && !neighbour.isClosed()){
+                        neighbour.setOpen();
+                    }
+                    visual.push(neighbour);
                 }
             }
         }
-        visualize();
         if (currentCell!=start){
             currentCell.setClosed();
+            visual.push(currentCell);
         }
     }
+    visualize(visual,0);
     return false;
 }
 
@@ -194,7 +223,6 @@ function main(){
     startBtn.addEventListener('click',(e)=>{
         e.preventDefault;
         console.log("Run A* Algorithm");
-
         for(let i=0; i<grid.length; i++){
             for(let j=0; j<grid[i].length; j++){
                 const cell = grid[i][j];
@@ -203,7 +231,29 @@ function main(){
         }
 
         aStarSearch(startCell,endCell);
-    })
+    });
+
+    resetBtn.addEventListener('click', (e)=>{
+       
+        console.log("Clearing board...reseting visualizer");
+        console.log(grid.length);
+        for(let i=0; i<grid.length; i++){
+            for(let j=0; j<grid[i].length; j++){
+                const cell = grid[i][j];
+                cell.neighbours = [];
+                cell.setAvailable();
+                const cellHTML = document.querySelector(`#cell_${cell.getX()}_${cell.getY()}`);
+                cellHTML.style.backgroundColor = "#fff";
+                cellHTML.style.border = "1px solid #ccc";
+                startCell = null;
+                endCell = null;
+                setStart = false;
+                setEnd = false;
+                
+            }  
+        }
+
+    });
 }
 
 main();
