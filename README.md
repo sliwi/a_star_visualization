@@ -15,5 +15,4 @@ In particular, this includes a good architecture, and better software design by 
 This project will eventualy be re-made and will include more graph-search algorithms such as breadth-first search and depth-first search.
 
 # Access Project
---Link to be added
-
+https://sliwi.github.io/a_star_visualization/
