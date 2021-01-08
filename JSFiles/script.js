@@ -9,6 +9,7 @@ let mouseDown = false;
 let startCell;
 let endCell;
 let speed;
+
 const speedSetting = {
     FAST:1,
     AVERAGE:20,
